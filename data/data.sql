@@ -33,8 +33,8 @@ ALTER TABLE ONLY cards
 ALTER TABLE ONLY statuses
     ADD CONSTRAINT pr_statuses_id PRIMARY KEY (id);
 --
--- ALTER TABLE ONLY boards
---     ADD CONSTRAINT pr_boards_id FOREIGN KEY (id) REFERENCES cards(board_id) ON DELETE CASCADE;
+--  ALTER TABLE ONLY boards
+--    ADD CONSTRAINT pr_cards_id FOREIGN KEY (id) REFERENCES cards(board_id) ON DELETE CASCADE;
 --
 -- ALTER TABLE ONLY cards
 --     ADD CONSTRAINT pr_statuses_id FOREIGN KEY (id) REFERENCES cards(status_id) ON DELETE CASCADE;
