@@ -4,7 +4,7 @@ import database_common_sql
 
 
 @database_common_sql.connection_handler
-def get_boards(cursor: RealDictCursor) -> list:
+def get_boards(cursor: RealDictCursor):
     query = """
             SELECT *
             FROM boards
@@ -12,5 +12,30 @@ def get_boards(cursor: RealDictCursor) -> list:
             """
 
     cursor.execute(query)
+    boards = cursor.fetchall()
+    return boards
 
-    return cursor.fetchall()
+@database_common_sql.connection_handler
+def get_cards(cursor: RealDictCursor):
+    query = """
+            SELECT *
+            FROM cards
+            ORDER BY id
+            """
+
+    cursor.execute(query)
+    cards = cursor.fetchall()
+
+    return cards
+
+@database_common_sql.connection_handler
+def get_statuses(cursor: RealDictCursor):
+    query = """
+            SELECT *
+            FROM statuses
+            ORDER BY id
+            """
+
+    cursor.execute(query)
+    statuses = cursor.fetchall()
+    return statuses
