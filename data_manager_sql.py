@@ -20,11 +20,11 @@ def get_cards(cursor: RealDictCursor, board_id):
     query = """
             SELECT *
             FROM cards
-            WHERE cards.board_id = board_id
+            WHERE board_id = %(board_id)s
             ORDER BY id
             """
 
-    cursor.execute(query)
+    cursor.execute(query, {'board_id': board_id})
     cards = cursor.fetchall()
 
     return cards
