@@ -3,6 +3,7 @@ import {dataHandler} from "./data_handler.js";
 
 export let dom = {
     init: function () {
+        addNewBoardEventHandler()
         // This function should run once, when the page is loaded.
     },
     loadBoards: function () {
@@ -61,7 +62,7 @@ export let dom = {
         for (let toggle of boardToggleList) {
             toggle.addEventListener('click', this.toggleBoard);
         }
-        addNewBoard();
+        // addNewBoard();
     },
     generateCardHtml: function (cardId, cardTitle) {
         return `
@@ -103,17 +104,22 @@ export let dom = {
 
 //new things
 
-function addNewBoard() {
+function addNewBoardEventHandler() {
     let addButton = document.querySelector('#board-add');
     addButton.addEventListener('click', function () {
         let newBoardTitle = prompt('Board name: ');
-        addBoardApi(newBoardTitle)
-    });
+        console.log(newBoardTitle)
+        addBoardApi(newBoardTitle,)
+    })
+};
 
-    function addBoardApi(boardName, callback) {
-        fetch(`/save-new-board/${boardName}`)
-            .then(promise => promise.json())
-            .then(data => callback(data, boardName))
-    }
-}
+function addBoardApi(boardName, callback) {
+    fetch(`/boards`, {
+        method: 'POST',
+        body: `name=${boardName}`,
+        headers: {"Content-Type":"application/x-www-form-urlencoded",},
+    })
+        .then(promise => promise.json())
+        .then(data => console.log(data[0].id))
+};
 

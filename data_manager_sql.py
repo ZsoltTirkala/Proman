@@ -60,11 +60,12 @@ def add_new_board(cursor: RealDictCursor, new_board_title):
     query = """
             INSERT INTO boards(title) 
             VALUES (%(new_board_title)s)
+            returning id;
             """
 
     cursor.execute(query, {'new_board_title': new_board_title})
-    new_board_title = cursor.fetchall()
-    return new_board_title
+    new_board_id = cursor.fetchall()
+    return new_board_id
 
             
 
