@@ -42,6 +42,14 @@ def get_statuses():
     """
     return data_handler.get_card_status(1)
 
+# new things
+
+@app.route("/save-new-board/<board_name>")
+@json_response
+def save_new_board(board_name):
+    new_board_title = data_handler.saving_new_board(board_name)
+    return new_board_title
+
 
 
 def main():
