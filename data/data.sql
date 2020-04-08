@@ -57,6 +57,7 @@ ALTER TABLE ONLY cards
 INSERT INTO boards VALUES (1, 'Board 1');
 INSERT INTO boards VALUES (2, 'Board 2');
 INSERT INTO boards VALUES (3, 'Board 3');
+INSERT INTO boards VALUES (4, 'Board 4');
 
 INSERT INTO statuses VALUES (1, 'New');
 INSERT INTO statuses VALUES (2, 'In progress');

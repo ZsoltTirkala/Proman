@@ -7,15 +7,15 @@ export let dom = {
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
+
         dataHandler.getBoards(function (boards)
         {
             dataHandler.getStatuses(function (statuses) {
-                for (let board of boards) {
-                    dataHandler.getCards(function (cards) {
-                        dom.showBoards(board, statuses, cards);
-                    }, board.id)
+                for (let i=0; i<boards.length; i++) {
+                        dataHandler.getCards(function (cards) {
+                            dom.showBoards(boards[i], statuses, cards);
+                        }, boards[i].id);
                 }
-
             });
         });
     },

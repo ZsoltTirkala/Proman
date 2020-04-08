@@ -8,7 +8,7 @@ def get_boards(cursor: RealDictCursor):
     query = """
             SELECT *
             FROM boards
-            ORDER BY id
+            ORDER BY id;
             """
 
     cursor.execute(query)
@@ -21,7 +21,7 @@ def get_cards(cursor: RealDictCursor, board_id):
             SELECT *
             FROM cards
             WHERE board_id = %(board_id)s
-            ORDER BY id
+            ORDER BY id;
             """
 
     cursor.execute(query, {'board_id': board_id})
@@ -34,7 +34,7 @@ def get_statuses(cursor: RealDictCursor):
     query = """
             SELECT *
             FROM statuses
-            ORDER BY id
+            ORDER BY id;
             """
 
     cursor.execute(query)
@@ -47,12 +47,12 @@ def get_cards_from_board(cursor: RealDictCursor, board_id):
             SELECT *
             FROM cards
             WHERE cards.board_id  = %(board_id)s
-            ORDER BY id
+            ORDER BY id;
             """
 
     cursor.execute(query, {'board_id': board_id})
-    board_id = cursor.fetchall()
-    return board_id
+    return cursor.fetchall()
+
 
 
 
