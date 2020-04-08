@@ -7,20 +7,22 @@ export let dom = {
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
-        dataHandler.getBoards(function (boards) {
+        dataHandler.getBoards(function (boards)
+        {
             dataHandler.getStatuses(function (statuses) {
-                dataHandler.getCards(function (cards) {
-                    dom.showBoards(boards, statuses, cards);
-                })
+                for (let board of boards) {
+                    dataHandler.getCards(function (cards) {
+                        dom.showBoards(board, statuses, cards);
+                    }, board.id)
+                }
+
             });
         });
     },
-    showBoards: function (boards, statuses, cards) {
+    showBoards: function (board, statuses, cards) {
         // shows boards appending them to #boards div
         // it adds necessary event listeners also
         let boardList = '';
-
-        for (let board of boards) {
             boardList += this.generateBoardHtml(board.id, board.title);
             let statusList = '';
 
@@ -29,7 +31,7 @@ export let dom = {
                 let cardList = '';
 
                 for (let card of cards) {
-                    if (card.board_id === board.id && card.status_id === status.id) {
+                    if (card.status_id === status.id) {
                         cardList += this.generateCardHtml(card.id, card.title);
                     }
                 }
@@ -51,7 +53,7 @@ export let dom = {
             boardList += outerHtml;
             boardList += `
             </section>`;
-        }
+
 
         let boardsContainer = document.querySelector('.board-container');
         boardsContainer.insertAdjacentHTML('beforeend', boardList);

@@ -32,12 +32,12 @@ export let dataHandler = {
             callback(response);
         });
     },
-    getCards: function (callback) {
+    getCards: function (callback, board_id) {
         // the boards are retrieved and then the callback function is called with the boards
 
         // Here we use an arrow function to keep the value of 'this' on dataHandler.
         //    if we would use function(){...} here, the value of 'this' would change.
-        this._api_get('/get-cards', (response) => {
+        this._api_get(`/get-cards/${board_id}`, (response) => {
             this._data = response;
             callback(response);
         });
