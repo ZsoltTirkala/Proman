@@ -46,7 +46,7 @@ def get_cards_from_board(cursor: RealDictCursor, board_id):
     query = """
             SELECT *
             FROM cards
-            WHERE cards.board_id  = %(board_id)s
+            WHERE cards.board_id = %(board_id)s
             ORDER BY id;
             """
 
@@ -60,7 +60,7 @@ def add_new_board(cursor: RealDictCursor, new_board_title):
     query = """
             INSERT INTO boards(title) 
             VALUES (%(new_board_title)s)
-            returning id;
+            returning id, title;
             """
 
     cursor.execute(query, {'new_board_title': new_board_title})

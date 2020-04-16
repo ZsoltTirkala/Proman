@@ -48,7 +48,6 @@ def get_statuses():
 @json_response
 def save_new_board():
     new_board_name = request.form['name']
-    print(new_board_name)
     new_board_title = data_handler.saving_new_board(new_board_name)
     return new_board_title
 

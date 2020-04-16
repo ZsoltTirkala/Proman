@@ -107,12 +107,15 @@ export let dom = {
 function addNewBoardEventHandler() {
     let addButton = document.querySelector('#board-add');
     addButton.addEventListener('click', function () {
-        let newBoardTitle = prompt('Board name: ');
-        dataHandler.addBoard(newBoardTitle, function (data) {
+        let inputTitle = document.querySelector("#input-new-board-title");
+        let newBoardTitle=inputTitle.value;
+        console.log(inputTitle);
+        console.log(newBoardTitle);
+        dataHandler.addBoard(newBoardTitle,function (data) {
             console.log(data);
             let newBoardString = `        
             <section class="board" data-board-id="${data[0]['id']}">
-            <div class="board-header"><span class="board-title"></span>
+            <div class="board-header"><span class="board-title">${data[0]['title']}</span>
                 <button class="card-add">Add Card</button>
                 <button class="board-toggle" id="toggle${data[0]['id']}">Toggle Board<i class="fas fa-chevron-down"></i></button>
             </div>
