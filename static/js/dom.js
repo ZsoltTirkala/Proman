@@ -108,18 +108,15 @@ function addNewBoardEventHandler() {
     let addButton = document.querySelector('#board-add');
     addButton.addEventListener('click', function () {
         let newBoardTitle = prompt('Board name: ');
-        console.log(newBoardTitle)
-        addBoardApi(newBoardTitle,)
+        dataHandler.addBoard(newBoardTitle, function (data) {
+            console.log(data);
+            let newBoardString = `<p>${data[0]['id']}</p>`
+            let boardsContainer = document.querySelector('.board-container');
+            boardsContainer.insertAdjacentHTML('beforeend',newBoardString);
+
+        })
     })
 };
 
-function addBoardApi(boardName, callback) {
-    fetch(`/boards`, {
-        method: 'POST',
-        body: `name=${boardName}`,
-        headers: {"Content-Type":"application/x-www-form-urlencoded",},
-    })
-        .then(promise => promise.json())
-        .then(data => console.log(data[0].id))
-};
+
 

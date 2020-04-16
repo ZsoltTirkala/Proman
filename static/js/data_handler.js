@@ -13,8 +13,8 @@ export let dataHandler = {
             method: 'GET',
             credentials: 'same-origin'
         })
-        .then(response => response.json())  // parse the response as JSON
-        .then(json_response => callback(json_response));  // Call the `callback` with the returned object
+            .then(response => response.json())  // parse the response as JSON
+            .then(json_response => callback(json_response));  // Call the `callback` with the returned object
     },
     _api_post: function (url, data, callback) {
         // it is not called from outside
@@ -52,6 +52,17 @@ export let dataHandler = {
             callback(response);
         });
     },
+
+    addBoard: function (boardName, callback) {
+        fetch(`/boards`, {
+            method: 'POST',
+            body: `name=${boardName}`,
+            headers: {"Content-Type": "application/x-www-form-urlencoded",},
+        })
+            .then(promise => promise.json())
+            .then(data => callback(data))
+    },
+
     getStatus: function (statusId, callback) {
         // the status is retrieved and then the callback function is called with the status
     },
