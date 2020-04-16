@@ -110,9 +110,33 @@ function addNewBoardEventHandler() {
         let newBoardTitle = prompt('Board name: ');
         dataHandler.addBoard(newBoardTitle, function (data) {
             console.log(data);
-            let newBoardString = `<p>${data[0]['id']}</p>`
+            let newBoardString = `        
+            <section class="board" data-board-id="${data[0]['id']}">
+            <div class="board-header"><span class="board-title"></span>
+                <button class="card-add">Add Card</button>
+                <button class="board-toggle" id="toggle${data[0]['id']}">Toggle Board<i class="fas fa-chevron-down"></i></button>
+            </div>
+            <div class="board-columns" id="board${data[0]['id']}">
+                <div class="board-column">
+                    <div class="board-column-title">New</div>
+                        <div class="board-column-content"></div>
+                </div>
+                <div class="board-column">
+                    <div class="board-column-title">In Progress</div>
+                        <div class="board-column-content"></div>
+                </div>
+                <div class="board-column">
+                    <div class="board-column-title">Testing</div>
+                        <div class="board-column-content"></div>
+                </div>
+                <div class="board-column">
+                    <div class="board-column-title">Done</div>
+                        <div class="board-column-content"></div>
+                </div>
+             </div>
+            </section>`
             let boardsContainer = document.querySelector('.board-container');
-            boardsContainer.insertAdjacentHTML('beforeend',newBoardString);
+            boardsContainer.insertAdjacentHTML('beforeend', newBoardString);
 
         })
     })
