@@ -117,7 +117,7 @@ function addNewBoardEventHandler() {
         dataHandler.addBoard(newBoardTitle, function (data) {
             console.log(data);
             let newBoardString = `        
-            <section class="board" data-board-id="${data[0]['id']}">
+            <section class="board" data-board-id="${data[0]['id']}" >
             <div class="board-header"><span class="board-title">${data[0]['title']}</span>
                 <button class="card-add">Add Card</button>
                 <button class="board-toggle" id="toggle${data[0]['id']}">Toggle Board<i class="fas fa-chevron-down"></i></button>
@@ -157,10 +157,11 @@ function addNewCardEventHandler() {
             let newCardContent = inputCardTitle.value;
             let inputCardStatus = document.querySelector('.input-new-card-status');
             let newCardStatus = inputCardStatus.value;
+            console.log(newCardStatus);
 
-            dataHandler.addCard(newCardContent, newCardStatus, 3,function (data) {
+            dataHandler.addCard(newCardContent, newCardStatus, 2,function (data) {
                 let newCardString = `
-            <div class="card" data-card-id="${data[0]['id']}">
+            <div class="card" data-card-id="${data[0]['board_id']}">
             <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
             <div class="card-title">${newCardContent}</div>
             </div>`

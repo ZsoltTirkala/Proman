@@ -68,11 +68,11 @@ def add_new_board(cursor: RealDictCursor, new_board_title):
     return new_board_id
 
 @database_common_sql.connection_handler
-def add_new_card(cursor:RealDictCursor, new_card_title,  new_card_status, new_card_board_id):
+def add_new_card(cursor: RealDictCursor, new_card_title,  new_card_status, new_card_board_id):
     query = """
-            INSERT INTO cards(title, status_id, board_id)
+            INSERT INTO cards(title, board_id, status_id)
             VALUES (%(new_card_title)s, %(new_card_board_id)s, %(new_card_status)s)
-            returning id, title, status_id, board_id;
+            returning id, title, board_id, status_id;
             """
 
     cursor.execute(query, {'new_card_title': new_card_title,

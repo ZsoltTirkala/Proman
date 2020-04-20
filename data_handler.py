@@ -38,5 +38,4 @@ def saving_new_board(new_board_name):
 
 def saving_new_card(new_card_title, new_card_status, new_card_board_id):
     new_card = data_manager_sql.add_new_card(new_card_title, new_card_status, new_card_board_id)
-    print(new_card)
     return new_card

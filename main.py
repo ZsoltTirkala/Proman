@@ -59,7 +59,6 @@ def add_new_card():
     new_status = request.json['status']
     new_card_status = int(new_status)
     new_card_board_id = request.json['board_id']
-    print(new_card_content)
     new_card = data_handler.saving_new_card(new_card_content, new_card_status, new_card_board_id)
     return new_card
 
