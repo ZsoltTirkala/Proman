@@ -63,6 +63,16 @@ export let dataHandler = {
             .then(data => callback(data))
     },
 
+    addCard: function (cardName, callback) {
+        fetch(`/boards`, {
+            method: 'POST',
+            body: `name=${cardName}`,
+            headers: {"Content-Type": "application/x-www-form-urlencoded",},
+        })
+            .then(promise => promise.json())
+            .then(data => callback(data))
+    },
+
     getStatus: function (statusId, callback) {
         // the status is retrieved and then the callback function is called with the status
     },

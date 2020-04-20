@@ -35,3 +35,7 @@ def get_cards_for_board(board_id):
 def saving_new_board(new_board_name):
     new_board = data_manager_sql.add_new_board(new_board_name)
     return new_board
+
+def saving_new_card(new_card_name):
+    new_card = data_manager_sql.add_new_card(new_card_name)
+    return new_card

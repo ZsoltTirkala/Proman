@@ -67,6 +67,18 @@ def add_new_board(cursor: RealDictCursor, new_board_title):
     new_board_id = cursor.fetchall()
     return new_board_id
 
+@database_common_sql.connection_handler
+def add_new_card(cursor:RealDictCursor, new_card_title):
+    query = """
+            INSERT INTO cards(title)
+            VALUES (%(new_card_title)s)
+            returning id, title;
+            """
+
+    cursor.execute(query, {'new_card_title': new_card_title})
+    new_card_id = cursor.fetchall()
+    return new_card_id
+
             
 
 

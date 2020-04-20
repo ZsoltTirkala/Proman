@@ -52,6 +52,14 @@ def save_new_board():
     return new_board_title
 
 
+@app.route("/cards", methods=['POST'])
+@json_response
+def add_new_card():
+    new_card_name = request.form['name']
+    new_card_title = data_handler.saving_new_card(new_card_name)
+    return new_card_title
+
+
 
 def main():
     app.run(debug=True)

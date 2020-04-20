@@ -3,7 +3,8 @@ import {dataHandler} from "./data_handler.js";
 
 export let dom = {
     init: function () {
-        addNewBoardEventHandler()
+        addNewBoardEventHandler();
+        addNewCardEventHandler();
         // This function should run once, when the page is loaded.
     },
     loadBoards: function () {
@@ -82,7 +83,8 @@ export let dom = {
         return `
         <section class="board" data-board-id="${boardId}">
             <div class="board-header"><span class="board-title">${boardTitle}</span>
-                <button class="card-add">Add Card</button>
+                <input  type="text" id="input-new-card-title" required placeholder="Enter New Card content">
+                <button onclick="addNewCardEventHandler()" class="card-add" id="add-new-card">Add Card</button>
                 <button class="board-toggle" id="toggle${boardId}">Toggle Board<i class="fas fa-chevron-down"></i></button>
             </div>
         `
@@ -108,10 +110,10 @@ function addNewBoardEventHandler() {
     let addButton = document.querySelector('#board-add');
     addButton.addEventListener('click', function () {
         let inputTitle = document.querySelector("#input-new-board-title");
-        let newBoardTitle=inputTitle.value;
+        let newBoardTitle = inputTitle.value;
         console.log(inputTitle);
         console.log(newBoardTitle);
-        dataHandler.addBoard(newBoardTitle,function (data) {
+        dataHandler.addBoard(newBoardTitle, function (data) {
             console.log(data);
             let newBoardString = `        
             <section class="board" data-board-id="${data[0]['id']}">
@@ -141,6 +143,26 @@ function addNewBoardEventHandler() {
             let boardsContainer = document.querySelector('.board-container');
             boardsContainer.insertAdjacentHTML('beforeend', newBoardString);
 
+        })
+    })
+};
+
+function addNewCardEventHandler() {
+    let newCard = document.querySelector('#add-new-card');
+    newCard.addEventListener('click', function () {
+        let addCardSelector = document.querySelector('#input-new-card-title');
+        let addCardValue = addCardSelector.value;
+        console.log(addCardSelector);
+        console.log(addCardValue);
+        dataHandler.addCard(addCardValue, function (data) {
+            console.log(data);
+            let newCardString = `
+            <div class="card" data-card-id="${data[0]['id']}">
+                <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
+                <div class="card-title">${addCardValue}</div>
+            </div>`
+            let cardsContainer = document.querySelector('.board-column-content');
+            cardsContainer.insertAdjacentHTML('beforeend', newCardString);
         })
     })
 };
