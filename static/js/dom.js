@@ -4,7 +4,6 @@ import {dataHandler} from "./data_handler.js";
 export let dom = {
     init: function () {
         addNewBoardEventHandler();
-        addNewCardEventHandler();
         // This function should run once, when the page is loaded.
     },
     loadBoards: function () {
@@ -58,6 +57,7 @@ export let dom = {
 
         let boardsContainer = document.querySelector('.board-container');
         boardsContainer.insertAdjacentHTML('beforeend', boardList);
+        addNewCardEventHandler();
 
         let boardToggleList = document.querySelectorAll('.board-toggle');
         for (let toggle of boardToggleList) {
@@ -83,8 +83,9 @@ export let dom = {
         return `
         <section class="board" data-board-id="${boardId}">
             <div class="board-header"><span class="board-title">${boardTitle}</span>
-                <input  type="text" id="input-new-card-title" required placeholder="Enter New Card content">
-                <button onclick="addNewCardEventHandler()" class="card-add" id="add-new-card">Add Card</button>
+                <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content">
+                <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status">
+                <button class="add-new-card" type="submit">Add Card</button>
                 <button class="board-toggle" id="toggle${boardId}">Toggle Board<i class="fas fa-chevron-down"></i></button>
             </div>
         `
@@ -148,24 +149,59 @@ function addNewBoardEventHandler() {
 };
 
 function addNewCardEventHandler() {
-    let newCard = document.querySelector('#add-new-card');
-    newCard.addEventListener('click', function () {
-        let addCardSelector = document.querySelector('#input-new-card-title');
-        let addCardValue = addCardSelector.value;
-        console.log(addCardSelector);
-        console.log(addCardValue);
-        dataHandler.addCard(addCardValue, function (data) {
-            console.log(data);
-            let newCardString = `
+    let addCardButton = document.querySelector('.add-new-card');
+    console.log(addCardButton);
+    if (addCardButton) {
+        addCardButton.addEventListener('click', function () {
+            let inputCardTitle = document.querySelector('.input-new-card-title');
+            let newCardContent = inputCardTitle.value;
+            let inputCardStatus = document.querySelector('.input-new-card-status');
+            let newCardStatus = inputCardStatus.value;
+
+            dataHandler.addCard(newCardContent, newCardStatus, 3,function (data) {
+                let newCardString = `
             <div class="card" data-card-id="${data[0]['id']}">
-                <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
-                <div class="card-title">${addCardValue}</div>
+            <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
+            <div class="card-title">${newCardContent}</div>
             </div>`
-            let cardsContainer = document.querySelector('.board-column-content');
-            cardsContainer.insertAdjacentHTML('beforeend', newCardString);
+                let cardsContainer = document.querySelector('.board-column-content');
+                cardsContainer.insertAdjacentHTML('afterend', newCardString);
+            })
         })
-    })
+    }
 };
+// function addNewCardEventHandler() {
+//     let getCardsBoardId = document.querySelector('.board');
+//     let cardsBoardId = getCardsBoardId.dataset.boardId;
+//     let newCard = document.querySelector('.add-new-card');
+//     if (newCard) {
+//         newCard.addEventListener('click', function () {
+//             let addCardSelector = document.querySelector('#input-new-card-title');
+//             let addCardValue = addCardSelector.value;
+//             console.log(addCardSelector);
+//             console.log(addCardValue);
+//             dataHandler.addCard(addCardValue, function (data) {
+//                 console.log(data);
+//                 let newCardString = `
+//                 <div class="card" data-card-id="${data[0]['id']}">
+//                     <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
+//                     <div class="card-title">${addCardValue}</div>
+//                 </div>`;
+//                 let getBoardColumnsId = document.querySelector('.board-columns');
+//                 for (let i = 0; i<getBoardColumnsId.length; i++) {
+//                     if (cardsBoardId === getBoardColumnsId[i].id) {
+//                         let boardColumndId = document.querySelector('.board-column');
+//                         for (let i = 0; i<boardColumndId.length; i++) {
+//                             if (boardColumndId.dataset.boardColumnId === 2) {
+//                                 boardColumndId.insertAdjacentHTML('beforeend', newCardString);
+//                             }
+//                         }
+//                     }
+//                 }
+//             })
+//         })
+//     }
+
 
 
 

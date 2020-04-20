@@ -19,6 +19,17 @@ export let dataHandler = {
     _api_post: function (url, data, callback) {
         // it is not called from outside
         // sends the data to the API, and calls callback function
+        fetch(url, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())  // parse the response as JSON
+            .then(json_response => callback(json_response));  // Call the `callback` with the returned object
     },
     init: function () {
     },
@@ -63,14 +74,12 @@ export let dataHandler = {
             .then(data => callback(data))
     },
 
-    addCard: function (cardName, callback) {
-        fetch(`/boards`, {
-            method: 'POST',
-            body: `name=${cardName}`,
-            headers: {"Content-Type": "application/x-www-form-urlencoded",},
-        })
-            .then(promise => promise.json())
-            .then(data => callback(data))
+    addCard: function (newCardContent, newCardStatus, newCardBoardId, callback) {
+        this._api_post(`/cards`, {
+            name: newCardContent,
+            status: newCardStatus,
+            board_id: newCardBoardId
+        }, callback);
     },
 
     getStatus: function (statusId, callback) {
