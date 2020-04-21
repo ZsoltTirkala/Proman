@@ -57,12 +57,13 @@ export let dom = {
 
         let boardsContainer = document.querySelector('.board-container');
         boardsContainer.insertAdjacentHTML('beforeend', boardList);
-        addNewCardEventHandler();
+
 
         let boardToggleList = document.querySelectorAll('.board-toggle');
         for (let toggle of boardToggleList) {
             toggle.addEventListener('click', this.toggleBoard);
         }
+        addNewCardEventHandler();
         // addNewBoard();
     },
     generateCardHtml: function (cardId, cardTitle) {
@@ -151,15 +152,20 @@ function addNewBoardEventHandler() {
 function addNewCardEventHandler() {
     let addCardButton = document.querySelector('.add-new-card');
     console.log(addCardButton);
+
     if (addCardButton) {
         addCardButton.addEventListener('click', function () {
             let inputCardTitle = document.querySelector('.input-new-card-title');
             let newCardContent = inputCardTitle.value;
             let inputCardStatus = document.querySelector('.input-new-card-status');
             let newCardStatus = inputCardStatus.value;
+            let newCardBoard = document.querySelector('.board');
+            let newCardBoardId = newCardBoard.dataset.boardId;
+            console.log(newCardBoardId);
+
             console.log(newCardStatus);
 
-            dataHandler.addCard(newCardContent, newCardStatus, 2,function (data) {
+            dataHandler.addCard(newCardContent, newCardStatus, newCardBoardId, function (data) {
                 let newCardString = `
             <div class="card" data-card-id="${data[0]['board_id']}">
             <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
