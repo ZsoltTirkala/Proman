@@ -1,6 +1,8 @@
 // It uses data_handler.js to visualize elements
 import {dataHandler} from "./data_handler.js";
 
+let newCard = true;
+
 export let dom = {
     init: function () {
         addNewBoardEventHandler();
@@ -13,11 +15,18 @@ export let dom = {
                 for (let board of boards) {
                     dataHandler.getCards(function (cards) {
                         dom.showBoards(board, statuses, cards);
+                        console.log(cards);
+                        if (newCard){
+                            addNewCardEventHandler();
+                            newCard = false;
+                        }
                     }, board.id)
+
                 }
 
             });
         });
+        newCard = true;
     },
     showBoards: function (board, statuses, cards) {
         // shows boards appending them to #boards div
@@ -54,16 +63,14 @@ export let dom = {
         boardList += `
             </section>`;
 
-
         let boardsContainer = document.querySelector('.board-container');
         boardsContainer.insertAdjacentHTML('beforeend', boardList);
-
 
         let boardToggleList = document.querySelectorAll('.board-toggle');
         for (let toggle of boardToggleList) {
             toggle.addEventListener('click', this.toggleBoard);
         }
-        addNewCardEventHandler();
+
         // addNewBoard();
     },
     generateCardHtml: function (cardId, cardTitle) {
@@ -103,8 +110,8 @@ export let dom = {
         }
     },
 
-
-};
+}
+;
 
 //new things
 
@@ -177,6 +184,8 @@ function addNewCardEventHandler() {
         })
     }
 };
+
+
 // function addNewCardEventHandler() {
 //     let getCardsBoardId = document.querySelector('.board');
 //     let cardsBoardId = getCardsBoardId.dataset.boardId;
