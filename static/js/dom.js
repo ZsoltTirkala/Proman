@@ -65,6 +65,7 @@ export let dom = {
             }
 
             initAddButton(boardDivId);
+            initStatusButton(boardDivId);
 
         },
         generateCardHtml: function (cardId, cardTitle) {
@@ -88,6 +89,8 @@ export let dom = {
                 <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content" hidden>
                 <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status" hidden>
                 <button class="add-new-card" type="submit">Add Card</button>
+                <input  type="text" class="input-new-status-title" required placeholder="Enter New Status Name" >
+                <button class="add-new-status" type="submit">Add Status</button>
                 <button class="board-toggle" id="toggle${boardId}">Hide<i class="fas fa-chevron-down"></i></button>
             </div>
         `
@@ -126,6 +129,8 @@ function addNewBoardEventHandler() {
                 <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content" hidden>
                 <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status" hidden>
                 <button class="add-new-card" type="submit">Add Card</button>
+                <input  type="text" class="input-new-status-title" required placeholder="Enter New Status Name" >
+                <button class="add-new-status" type="submit">Add Status</button>
                 <button class="board-toggle" id="toggle${data[0]['id']}">Hide<i class="fas fa-chevron-down"></i></button>
             </div>
             <div class="board-columns" id="board${data[0]['id']}">
@@ -157,7 +162,8 @@ function addNewBoardEventHandler() {
 
                 inputTitle.hidden = true;
                 initAddButton(`board${data[0]['id']}`);
-                console.log(`board${data[0]['id']}`);
+                // console.log(`board${data[0]['id']}`);
+                initStatusButton(`board${data[0]['id']}`);
             })
         }
     })
@@ -169,6 +175,12 @@ function initAddButton(boardDivId) {
     addCardButton.addEventListener('click', addNewCardEventHandler);
 }
 
+function initStatusButton(boardDivId) {
+    const boardDiv = document.querySelector(`#${boardDivId}`);
+    let addCardButton = boardDiv.parentElement.querySelector('.add-new-status');
+    addCardButton.addEventListener('click', addNewStatusEventHandler);
+}
+
 function addNewCardEventHandler(e) {
     let board = e.target.closest('.board');
     let inputCardTitle = board.querySelector('.input-new-card-title');
@@ -178,19 +190,39 @@ function addNewCardEventHandler(e) {
     let newCardBoardId = board.dataset.boardId;
     inputCardTitle.hidden = false;
     inputCardStatus.hidden = false;
-    dataHandler.addCard(newCardContent, newCardStatus, newCardBoardId, function (data) {
-        let newCardString = `
+    if (newCardContent !== "" && newCardStatus !== "") {
+        dataHandler.addCard(newCardContent, newCardStatus, newCardBoardId, function (data) {
+            let newCardString = `
             <div class="card" data-card-id="${data[0]['board_id']}">
             <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
             <div class="card-title">${newCardContent}</div>
             </div>`
-        let cardsContainer = board.querySelector(`[data-board-column-id="${newCardStatus}"] .board-column-content`);
-        cardsContainer.insertAdjacentHTML('beforeend', newCardString);
-        inputCardTitle.value = "";
-        inputCardStatus.value = "";
-        inputCardTitle.hidden = true;
-        inputCardStatus.hidden = true;
+            let cardsContainer = board.querySelector(`[data-board-column-id="${newCardStatus}"] .board-column-content`);
+            cardsContainer.insertAdjacentHTML('beforeend', newCardString);
+            inputCardTitle.value = "";
+            inputCardStatus.value = "";
+            inputCardTitle.hidden = true;
+            inputCardStatus.hidden = true;
+        })
+    }
+}
+
+function addNewStatusEventHandler(e) {
+    let board = e.target.closest(`.board`);
+    let inputStatusTitle = board.querySelector('.input-new-status-title');
+    let newStatusContent = inputStatusTitle.value;
+    let newStatusBoardId = board.dataset.boardId;
+    console.log(newStatusBoardId);
+    dataHandler.addStatus(newStatusContent, newStatusBoardId, function (data) {
+        let newStatusString = `
+        <div class="board-column">
+            <div class="board-column-title">${newStatusContent}</div>
+            <div class="board-column-content"></div>
+        </div>`
+        let statusesContainer = board.querySelector(`.board-columns`);
+        statusesContainer.insertAdjacentHTML('beforeend',newStatusString);
     })
+
 }
 
 

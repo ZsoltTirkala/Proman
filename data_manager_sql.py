@@ -81,6 +81,18 @@ def add_new_card(cursor: RealDictCursor, new_card_title,  new_card_status, new_c
     new_card = cursor.fetchall()
     return new_card
 
+@database_common_sql.connection_handler
+def add_new_status(cursor: RealDictCursor, new_status_title, new_status_board_id):
+    query = """
+            INSERT INTO statuses(title, board_id)
+            VALUES (%(new_status_title)s, %(new_status_board_id)s)
+            returning title, board_id;
+            """
+
+    cursor.execute(query, {'new_status_title': new_status_title, 'new_status_board_id': new_status_board_id})
+    new_status = cursor.fetchall()
+    return new_status
+
             
 
 

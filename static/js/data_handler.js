@@ -82,6 +82,12 @@ export let dataHandler = {
         }, callback);
     },
 
+    addStatus: function (newStatusContent,newStatusBoardId,callback) {
+        this._api_post(`/new-status`, {
+            name: newStatusContent,
+            board_id: newStatusBoardId
+        },callback);
+    },
     getStatus: function (statusId, callback) {
         // the status is retrieved and then the callback function is called with the status
     },

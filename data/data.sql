@@ -22,7 +22,8 @@ CREATE TABLE public.boards (
 DROP TABLE IF EXISTS public.statuses;
 CREATE TABLE public.statuses (
     id SERIAL NOT NULL,
-    title VARCHAR(20)
+    title VARCHAR(20),
+    board_id SERIAL NOT NULL
 );
 
 DROP TABLE IF EXISTS public.cards;
@@ -59,10 +60,10 @@ INSERT INTO boards VALUES (2, 'Board 2');
 INSERT INTO boards VALUES (3, 'Board 3');
 INSERT INTO boards VALUES (4, 'Board 4');
 
-INSERT INTO statuses VALUES (1, 'New');
-INSERT INTO statuses VALUES (2, 'In progress');
-INSERT INTO statuses VALUES (3, 'Testing');
-INSERT INTO statuses VALUES (4, 'Done');
+INSERT INTO statuses VALUES (1, 'New', 1);
+INSERT INTO statuses VALUES (2, 'In progress', 1);
+INSERT INTO statuses VALUES (3, 'Testing', 1);
+INSERT INTO statuses VALUES (4, 'Done', 1);
 
 
 INSERT INTO cards VALUES (1, 'new card 1', null, 1, 1);
