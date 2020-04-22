@@ -61,7 +61,7 @@ export let dom = {
 
             let boardToggleList = document.querySelectorAll('.board-toggle');
             for (let toggle of boardToggleList) {
-                toggle.addEventListener('click', this.toggleBoard);
+                toggle.addEventListener('click', this.hideBoard);
             }
 
             initAddButton(boardDivId);
@@ -88,11 +88,11 @@ export let dom = {
                 <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content" hidden>
                 <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status" hidden>
                 <button class="add-new-card" type="submit">Add Card</button>
-                <button class="board-toggle" id="toggle${boardId}">Toggle Board<i class="fas fa-chevron-down"></i></button>
+                <button class="board-toggle" id="toggle${boardId}">Hide<i class="fas fa-chevron-down"></i></button>
             </div>
         `
         },
-        toggleBoard: function (e) {
+        hideBoard: function (e) {
             let domId = e.target.getAttribute('id');
             let id = 'board' + domId.slice(6);
             let x = document.getElementById(id);
@@ -123,10 +123,10 @@ function addNewBoardEventHandler() {
                 let newBoardString = `        
             <section class="board" data-board-id="${data[0]['id']}" >
             <div class="board-header"><span class="board-title">${data[0]['title']}</span>
-                <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content">
-                <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status">
+                <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content" hidden>
+                <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status" hidden>
                 <button class="add-new-card" type="submit">Add Card</button>
-                <button class="board-toggle" id="toggle${data[0]['id']}">Toggle Board<i class="fas fa-chevron-down"></i></button>
+                <button class="board-toggle" id="toggle${data[0]['id']}">Hide<i class="fas fa-chevron-down"></i></button>
             </div>
             <div class="board-columns" id="board${data[0]['id']}">
                 <div class="board-column" data-board-column-id="1">
@@ -149,6 +149,12 @@ function addNewBoardEventHandler() {
             </section>`
                 let boardsContainer = document.querySelector('.board-container');
                 boardsContainer.insertAdjacentHTML('beforeend', newBoardString);
+
+                let boardHideList = document.querySelectorAll('.board-toggle');
+                for (let toggle of boardHideList) {
+                    toggle.addEventListener('click', dom.hideBoard);
+                }
+
                 inputTitle.hidden = true;
                 initAddButton(`board${data[0]['id']}`);
                 console.log(`board${data[0]['id']}`);
