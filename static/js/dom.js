@@ -23,6 +23,7 @@ export let dom = {
             // shows boards appending them to #boards div
             // it adds necessary event listeners also
             let boardDivId = `board${board.id}`;
+            console.log(boardDivId);
             let boardList = '';
             boardList += this.generateBoardHtml(board.id, board.title);
             let statusList = '';
@@ -124,23 +125,23 @@ function addNewBoardEventHandler() {
             <div class="board-header"><span class="board-title">${data[0]['title']}</span>
                 <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content">
                 <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status">
-                <button class="card-add">Add Card</button>
+                <button class="add-new-card" type="submit">Add Card</button>
                 <button class="board-toggle" id="toggle${data[0]['id']}">Toggle Board<i class="fas fa-chevron-down"></i></button>
             </div>
             <div class="board-columns" id="board${data[0]['id']}">
-                <div class="board-column">
+                <div class="board-column" data-board-column-id="1">
                     <div class="board-column-title">New</div>
                         <div class="board-column-content"></div>
                 </div>
-                <div class="board-column">
+                <div class="board-column" data-board-column-id="2">
                     <div class="board-column-title">In Progress</div>
                         <div class="board-column-content"></div>
                 </div>
-                <div class="board-column">
+                <div class="board-column"  data-board-column-id="3">
                     <div class="board-column-title">Testing</div>
                         <div class="board-column-content"></div>
                 </div>
-                <div class="board-column">
+                <div class="board-column" data-board-column-id="4">
                     <div class="board-column-title">Done</div>
                         <div class="board-column-content"></div>
                 </div>
@@ -149,6 +150,8 @@ function addNewBoardEventHandler() {
                 let boardsContainer = document.querySelector('.board-container');
                 boardsContainer.insertAdjacentHTML('beforeend', newBoardString);
                 inputTitle.hidden = true;
+                initAddButton(`board${data[0]['id']}`);
+                console.log(`board${data[0]['id']}`);
             })
         }
     })
