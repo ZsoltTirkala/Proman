@@ -80,7 +80,7 @@ export let dom = {
         generateStatusHtml: function (statusId, statusTitle) {
             return `
         <div class="board-column" data-board-column-id="${statusId}">
-            <div class="board-column-title">${statusTitle}</div>
+            <div class="board-column-title">${statusTitle}(${statusId})</div>
         `;
         },
         generateBoardHtml: function (boardId, boardTitle) {
@@ -90,7 +90,7 @@ export let dom = {
                 <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content" hidden>
                 <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status" hidden>
                 <button class="add-new-card" type="submit">Add Card</button>
-                <input  type="text" class="input-new-status-title" required placeholder="Enter New Status Name" >
+                <input  type="text" class="input-new-status-title" required placeholder="Enter New Status Name" hidden>
                 <button class="add-new-status" type="submit">Add Status</button>
                 <button class="delete-board-button" >Delete Board</button>
                 <button class="board-toggle" id="toggle${boardId}">Hide<i class="fas fa-chevron-down"></i></button>
@@ -131,7 +131,7 @@ function addNewBoardEventHandler() {
                 <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content" hidden>
                 <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status" hidden>
                 <button class="add-new-card" type="submit">Add Card</button>
-                <input  type="text" class="input-new-status-title" required placeholder="Enter New Status Name" >
+                <input  type="text" class="input-new-status-title" required placeholder="Enter New Status Name" hidden>
                 <button class="add-new-status" type="submit">Add Status</button>
                 <button class="delete-board-button" >Delete Board</button>
                 <button class="board-toggle" id="toggle${data[0]['id']}">Hide<i class="fas fa-chevron-down"></i></button>
@@ -224,15 +224,21 @@ function addNewStatusEventHandler(e) {
     let newStatusContent = inputStatusTitle.value;
     let newStatusBoardId = board.dataset.boardId;
     console.log(newStatusBoardId);
-    dataHandler.addStatus(newStatusContent, newStatusBoardId, function (data) {
-        let newStatusString = `
+    inputStatusTitle.hidden = false;
+    if (newStatusContent !== "") {
+        dataHandler.addStatus(newStatusContent, newStatusBoardId, function (data) {
+            let newStatusString = `
         <div class="board-column">
             <div class="board-column-title">${newStatusContent}</div>
             <div class="board-column-content"></div>
         </div>`
-        let statusesContainer = board.querySelector(`.board-columns`);
-        statusesContainer.insertAdjacentHTML('beforeend',newStatusString);
-    })
+            let statusesContainer = board.querySelector(`.board-columns`);
+            statusesContainer.insertAdjacentHTML('beforeend', newStatusString);
+            inputStatusTitle.value = "";
+            inputStatusTitle.hidden = true;
+
+        })
+    }
 }
 
 function deleteBoardEventHandler(e) {
