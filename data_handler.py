@@ -29,3 +29,13 @@ def get_cards_for_board(board_id):
     #         card['status_id'] = get_card_status(card['status_id'])  # Set textual status for the card
     #         matching_cards.append(card)
     return all_cards
+
+#new things
+
+def saving_new_board(new_board_name):
+    new_board = data_manager_sql.add_new_board(new_board_name)
+    return new_board
+
+def saving_new_card(new_card_title, new_card_status, new_card_board_id):
+    new_card = data_manager_sql.add_new_card(new_card_title, new_card_status, new_card_board_id)
+    return new_card

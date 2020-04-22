@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 from util import json_response
 
 import data_handler
@@ -41,6 +41,26 @@ def get_statuses():
     :param board_id: id of the parent board
     """
     return data_handler.get_card_status(1)
+
+# new things
+
+@app.route("/boards", methods=['POST'])
+@json_response
+def save_new_board():
+    new_board_name = request.form['name']
+    new_board_title = data_handler.saving_new_board(new_board_name)
+    return new_board_title
+
+
+@app.route("/cards", methods=['POST'])
+@json_response
+def add_new_card():
+    new_card_content = request.json['name']
+    new_status = request.json['status']
+    new_card_status = int(new_status)
+    new_card_board_id = request.json['board_id']
+    new_card = data_handler.saving_new_card(new_card_content, new_card_status, new_card_board_id)
+    return new_card
 
 
 
