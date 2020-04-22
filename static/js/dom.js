@@ -64,14 +64,27 @@ export let dom = {
                 toggle.addEventListener('click', this.hideBoard);
             }
 
+            const deleteIcons = document.querySelectorAll('.del-icon');
+            console.log(deleteIcons);
+            for (let img of deleteIcons) {
+                img.addEventListener('mouseover', function (e) {
+                    if (e.target.style.opacity == "0.2") {
+                        e.target.style.opacity = "1";
+                    } else {
+                        e.target.style.opacity = "0.2";
+                    }
+                });
+            }
+
             initAddButton(boardDivId);
 
         },
         generateCardHtml: function (cardId, cardTitle) {
             return `
         <div class="card" data-card-id="${cardId}">
-            <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
             <div class="card-title">${cardTitle}</div>
+            <div class="card-remove"><img class="del-icon" src="static/img/delete.png"></div>
+
         </div>
         `;
         },
@@ -103,6 +116,12 @@ export let dom = {
                 x.style.display = "none";
             }
         },
+
+        // changeImg: function(e) {
+        //     e.target.style.opacity = "1";
+        //
+        // },
+
 
     }
 ;
@@ -179,17 +198,19 @@ function addNewCardEventHandler(e) {
     inputCardTitle.hidden = false;
     inputCardStatus.hidden = false;
     dataHandler.addCard(newCardContent, newCardStatus, newCardBoardId, function (data) {
-        let newCardString = `
+        if (newCardContent !== "" && newCardStatus !== "") {
+            let newCardString = `
             <div class="card" data-card-id="${data[0]['board_id']}">
-            <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
+            <div class="card-remove"><img src="static/img/delete.png" hidden></div>
             <div class="card-title">${newCardContent}</div>
             </div>`
-        let cardsContainer = board.querySelector(`[data-board-column-id="${newCardStatus}"] .board-column-content`);
-        cardsContainer.insertAdjacentHTML('beforeend', newCardString);
-        inputCardTitle.value = "";
-        inputCardStatus.value = "";
-        inputCardTitle.hidden = true;
-        inputCardStatus.hidden = true;
+            let cardsContainer = board.querySelector(`[data-board-column-id="${newCardStatus}"] .board-column-content`);
+            cardsContainer.insertAdjacentHTML('beforeend', newCardString);
+            inputCardTitle.value = "";
+            inputCardStatus.value = "";
+            inputCardTitle.hidden = true;
+            inputCardStatus.hidden = true;
+        }
     })
 }
 
