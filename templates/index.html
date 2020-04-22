@@ -22,11 +22,11 @@
 <h1>ProMan</h1>
 
 <div class="board-container">
-    <button onclick="showInput()" class="board-add" >Add Board</button>
+    <button class="add-board-button" >Add Board</button>
     <label>
-        <input type="text" id="input-new-board-title" required placeholder="Enter New Board title">
+        <input type="text" id="input-new-board-title" required placeholder="Enter New Board title" hidden>
     </label>
-    <button onclick="addNewBoardEventHandler()" id="board-add" type="submit">Create Board</button>
+    <button id="board-add" type="submit">Create Board</button>
     <div class="card-container"></div>
 </div>
 </body>

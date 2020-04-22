@@ -1,8 +1,6 @@
 // It uses data_handler.js to visualize elements
 import {dataHandler} from "./data_handler.js";
 
-let newCard = true;
-
 export let dom = {
         init: function () {
             addNewBoardEventHandler();
@@ -20,7 +18,6 @@ export let dom = {
 
                 });
             });
-            newCard = true;
         },
         showBoard: function (board, statuses, cards) {
             // shows boards appending them to #boards div
@@ -87,8 +84,8 @@ export let dom = {
             return `
         <section class="board" data-board-id="${boardId}">
             <div class="board-header"><span class="board-title">${boardTitle}</span>
-                <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content">
-                <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status">
+                <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content" hidden>
+                <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status" hidden>
                 <button class="add-new-card" type="submit">Add Card</button>
                 <button class="board-toggle" id="toggle${boardId}">Toggle Board<i class="fas fa-chevron-down"></i></button>
             </div>
@@ -112,9 +109,13 @@ export let dom = {
 //new things
 
 function addNewBoardEventHandler() {
-    let addButton = document.querySelector('#board-add');
+    const addButton = document.querySelector('#board-add');
+    const inputTitle = document.querySelector("#input-new-board-title");
+    const addBoardButton = document.querySelector('.add-board-button');
+    addBoardButton.addEventListener('click',function () {
+       inputTitle.hidden = false;
+    });
     addButton.addEventListener('click', function () {
-        let inputTitle = document.querySelector("#input-new-board-title");
         let newBoardTitle = inputTitle.value;
         console.log(inputTitle);
         console.log(newBoardTitle);
@@ -123,6 +124,8 @@ function addNewBoardEventHandler() {
             let newBoardString = `        
             <section class="board" data-board-id="${data[0]['id']}" >
             <div class="board-header"><span class="board-title">${data[0]['title']}</span>
+                <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content">
+                <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status">
                 <button class="card-add">Add Card</button>
                 <button class="board-toggle" id="toggle${data[0]['id']}">Toggle Board<i class="fas fa-chevron-down"></i></button>
             </div>
@@ -147,7 +150,7 @@ function addNewBoardEventHandler() {
             </section>`
             let boardsContainer = document.querySelector('.board-container');
             boardsContainer.insertAdjacentHTML('beforeend', newBoardString);
-
+            inputTitle.hidden = true;
         })
     })
 }
@@ -176,37 +179,6 @@ function addNewCardEventHandler(e) {
     })
 }
 
-// function addNewCardEventHandler() {
-//     let getCardsBoardId = document.querySelector('.board');
-//     let cardsBoardId = getCardsBoardId.dataset.boardId;
-//     let newCard = document.querySelector('.add-new-card');
-//     if (newCard) {
-//         newCard.addEventListener('click', function () {
-//             let addCardSelector = document.querySelector('#input-new-card-title');
-//             let addCardValue = addCardSelector.value;
-//             console.log(addCardSelector);
-//             console.log(addCardValue);
-//             dataHandler.addCard(addCardValue, function (data) {
-//                 console.log(data);
-//                 let newCardString = `
-//                 <div class="card" data-card-id="${data[0]['id']}">
-//                     <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
-//                     <div class="card-title">${addCardValue}</div>
-//                 </div>`;
-//                 let getBoardColumnsId = document.querySelector('.board-columns');
-//                 for (let i = 0; i<getBoardColumnsId.length; i++) {
-//                     if (cardsBoardId === getBoardColumnsId[i].id) {
-//                         let boardColumndId = document.querySelector('.board-column');
-//                         for (let i = 0; i<boardColumndId.length; i++) {
-//                             if (boardColumndId.dataset.boardColumnId === 2) {
-//                                 boardColumndId.insertAdjacentHTML('beforeend', newCardString);
-//                             }
-//                         }
-//                     }
-//                 }
-//             })
-//         })
-//     }
 
 
 
