@@ -112,16 +112,14 @@ function addNewBoardEventHandler() {
     const addButton = document.querySelector('#board-add');
     const inputTitle = document.querySelector("#input-new-board-title");
     const addBoardButton = document.querySelector('.add-board-button');
-    addBoardButton.addEventListener('click',function () {
-       inputTitle.hidden = false;
+    addBoardButton.addEventListener('click', function () {
+        inputTitle.hidden = false;
     });
     addButton.addEventListener('click', function () {
         let newBoardTitle = inputTitle.value;
-        console.log(inputTitle);
-        console.log(newBoardTitle);
-        dataHandler.addBoard(newBoardTitle, function (data) {
-            console.log(data);
-            let newBoardString = `        
+        if (newBoardTitle !== "") {
+            dataHandler.addBoard(newBoardTitle, function (data) {
+                let newBoardString = `        
             <section class="board" data-board-id="${data[0]['id']}" >
             <div class="board-header"><span class="board-title">${data[0]['title']}</span>
                 <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content">
@@ -148,10 +146,11 @@ function addNewBoardEventHandler() {
                 </div>
              </div>
             </section>`
-            let boardsContainer = document.querySelector('.board-container');
-            boardsContainer.insertAdjacentHTML('beforeend', newBoardString);
-            inputTitle.hidden = true;
-        })
+                let boardsContainer = document.querySelector('.board-container');
+                boardsContainer.insertAdjacentHTML('beforeend', newBoardString);
+                inputTitle.hidden = true;
+            })
+        }
     })
 }
 
@@ -168,6 +167,8 @@ function addNewCardEventHandler(e) {
     let inputCardStatus = board.querySelector('.input-new-card-status');
     let newCardStatus = inputCardStatus.value;
     let newCardBoardId = board.dataset.boardId;
+    inputCardTitle.hidden = false;
+    inputCardStatus.hidden = false;
     dataHandler.addCard(newCardContent, newCardStatus, newCardBoardId, function (data) {
         let newCardString = `
             <div class="card" data-card-id="${data[0]['board_id']}">
@@ -176,6 +177,10 @@ function addNewCardEventHandler(e) {
             </div>`
         let cardsContainer = board.querySelector(`[data-board-column-id="${newCardStatus}"] .board-column-content`);
         cardsContainer.insertAdjacentHTML('beforeend', newCardString);
+        inputCardTitle.value = "";
+        inputCardStatus.value = "";
+        inputCardTitle.hidden = true;
+        inputCardStatus.hidden = true;
     })
 }
 
