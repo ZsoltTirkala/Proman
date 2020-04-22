@@ -58,12 +58,11 @@ ALTER TABLE ONLY cards
 INSERT INTO boards VALUES (1, 'Board 1');
 INSERT INTO boards VALUES (2, 'Board 2');
 INSERT INTO boards VALUES (3, 'Board 3');
-INSERT INTO boards VALUES (4, 'Board 4');
 
 INSERT INTO statuses VALUES (1, 'New', 1);
 INSERT INTO statuses VALUES (2, 'In progress', 1);
 INSERT INTO statuses VALUES (3, 'Testing', 1);
-INSERT INTO statuses VALUES (4, 'Done', 1);
+INSERT INTO statuses VALUES (4, 'Done', 1)
 
 
 INSERT INTO cards VALUES (1, 'new card 1', null, 1, 1);
@@ -72,3 +71,8 @@ INSERT INTO cards VALUES (3, 'in progress card 2', null, 2, 2);
 INSERT INTO cards VALUES (4, 'test card 1', null, 3, 3);
 INSERT INTO cards VALUES (5, 'done card 1', null, 2, 4);
 INSERT INTO cards VALUES (6, 'done card 2', null, 3, 4);
+
+
+-- SELECT pg_catalog.setval('boards_id_seq', 3, true);
+-- SELECT pg_catalog.setval('cards_id_seq', 6, true);
+-- SELECT pg_catalog.setval('statuses_id_seq', 4, true);
