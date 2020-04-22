@@ -66,6 +66,7 @@ export let dom = {
 
             initAddButton(boardDivId);
             initStatusButton(boardDivId);
+            initDeleteBoardButton(boardDivId);
 
         },
         generateCardHtml: function (cardId, cardTitle) {
@@ -91,6 +92,7 @@ export let dom = {
                 <button class="add-new-card" type="submit">Add Card</button>
                 <input  type="text" class="input-new-status-title" required placeholder="Enter New Status Name" >
                 <button class="add-new-status" type="submit">Add Status</button>
+                <button class="delete-board-button" >Delete Board</button>
                 <button class="board-toggle" id="toggle${boardId}">Hide<i class="fas fa-chevron-down"></i></button>
             </div>
         `
@@ -131,6 +133,7 @@ function addNewBoardEventHandler() {
                 <button class="add-new-card" type="submit">Add Card</button>
                 <input  type="text" class="input-new-status-title" required placeholder="Enter New Status Name" >
                 <button class="add-new-status" type="submit">Add Status</button>
+                <button class="delete-board-button" >Delete Board</button>
                 <button class="board-toggle" id="toggle${data[0]['id']}">Hide<i class="fas fa-chevron-down"></i></button>
             </div>
             <div class="board-columns" id="board${data[0]['id']}">
@@ -164,6 +167,7 @@ function addNewBoardEventHandler() {
                 initAddButton(`board${data[0]['id']}`);
                 // console.log(`board${data[0]['id']}`);
                 initStatusButton(`board${data[0]['id']}`);
+                initDeleteBoardButton(`board${data[0]['id']}`)
             })
         }
     })
@@ -179,6 +183,13 @@ function initStatusButton(boardDivId) {
     const boardDiv = document.querySelector(`#${boardDivId}`);
     let addCardButton = boardDiv.parentElement.querySelector('.add-new-status');
     addCardButton.addEventListener('click', addNewStatusEventHandler);
+}
+
+function initDeleteBoardButton(boardDivId) {
+    const boardDiv = document.querySelector(`#${boardDivId}`);
+    let deleteBoardButton = boardDiv.parentElement.querySelector('.delete-board-button')
+    deleteBoardButton.addEventListener('click',deleteBoardEventHandler);
+
 }
 
 function addNewCardEventHandler(e) {
@@ -222,7 +233,12 @@ function addNewStatusEventHandler(e) {
         let statusesContainer = board.querySelector(`.board-columns`);
         statusesContainer.insertAdjacentHTML('beforeend',newStatusString);
     })
+}
 
+function deleteBoardEventHandler(e) {
+    let board = e.target.closest('.board');
+    let boardId = board.dataset.boardId;
+    dataHandler.deleteBoard(boardId);
 }
 
 

@@ -88,6 +88,13 @@ export let dataHandler = {
             board_id: newStatusBoardId
         },callback);
     },
+
+    deleteBoard: function(boardId,callback) {
+        this._api_post(`/delete-board`, {
+            board_id: boardId
+        },callback);
+    },
+
     getStatus: function (statusId, callback) {
         // the status is retrieved and then the callback function is called with the status
     },

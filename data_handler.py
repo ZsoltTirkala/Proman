@@ -46,3 +46,8 @@ def saving_new_card(new_card_title, new_card_status, new_card_board_id):
 def saving_new_status(new_status_title,new_status_board_id):
     new_status = data_manager_sql.add_new_status(new_status_title,new_status_board_id)
     return new_status
+
+def delete_board(board_id):
+    data_manager_sql.delete_board_cards(board_id)
+    data_manager_sql.delete_board_statuses(board_id)
+    data_manager_sql.delete_board_itself(board_id)

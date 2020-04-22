@@ -72,6 +72,13 @@ def add_new_status():
     return new_status
 
 
+@app.route("/delete-board", methods=['POST'])
+@json_response
+def delete_board():
+    board_id = request.json['board_id']
+    data_handler.delete_board(board_id)
+
+
 def main():
     app.run(debug=True)
 

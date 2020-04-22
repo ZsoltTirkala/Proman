@@ -93,7 +93,31 @@ def add_new_status(cursor: RealDictCursor, new_status_title, new_status_board_id
     new_status = cursor.fetchall()
     return new_status
 
-            
+@database_common_sql.connection_handler
+def delete_board_cards(cursor: RealDictCursor, board_id):
+    query = """
+    DELETE FROM cards
+    WHERE cards.board_id = %(board_id)s
+    """
+    cursor.execute(query, {'board_id': board_id})
+
+
+@database_common_sql.connection_handler
+def delete_board_statuses(cursor: RealDictCursor, board_id):
+    query = """
+    DELETE FROM statuses
+    WHERE statuses.board_id = %(board_id)s
+    """
+    cursor.execute(query,{'board_id': board_id})
+
+
+@database_common_sql.connection_handler
+def delete_board_itself(cursor: RealDictCursor, board_id):
+    query = """
+    DELETE FROM boards
+    WHERE boards.id = %(board_id)s
+    """
+    cursor.execute(query, {'board_id': board_id})
 
 
 
