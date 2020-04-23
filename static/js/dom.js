@@ -65,6 +65,7 @@ export let dom = {
             }
 
             changeDelIcon();
+            changeRenameIcon();
             initAddCard(boardDivId);
             initStatusButton(boardDivId);
             initDeleteBoardButton(boardDivId);
@@ -75,6 +76,7 @@ export let dom = {
             return `
         <div class="card" data-card-id="${cardId}">
             <div class="card-remove"><img class="del-icon" src="static/img/delete.png"></div>
+            <div class="card-rename"><img class="rename-icon" src="static/img/rename.png"></div>
             <div class="card-title">${cardTitle}</div>
         </div>
         `;
@@ -219,6 +221,7 @@ function addNewCardEventHandler(e) {
             let newCardString = `
             <div class="card" data-card-id="${data[0]['id']}">
             <div class="card-remove"><img class="del-icon" src="static/img/delete.png"></div>
+            <div class="card-rename"><img class="rename-icon" src="static/img/rename.png"></div>
             <div class="card-title">${newCardContent}</div>
             </div>`
             let cardsContainer = board.querySelector(`[data-board-column-id="${newCardStatus}"] .board-column-content`);
@@ -228,6 +231,7 @@ function addNewCardEventHandler(e) {
             inputCardTitle.hidden = true;
             inputCardStatus.hidden = true;
             changeDelIcon();
+            changeRenameIcon();
             initDeleteCardIcon();
         })
 
@@ -272,8 +276,18 @@ function deleteDomBoard(board) {
 
 function changeDelIcon() {
     const deleteIcons = document.querySelectorAll('.del-icon');
-    console.log(deleteIcons);
     for (let img of deleteIcons) {
+        img.addEventListener('mouseenter', function (e) {
+            e.target.style.opacity = "1";
+        })
+        img.addEventListener('mouseleave', function (e) {
+            e.target.style.opacity = "0.2";
+        })
+    }
+}
+function changeRenameIcon() {
+    const renameIcons = document.querySelectorAll('.rename-icon');
+    for (let img of renameIcons) {
         img.addEventListener('mouseenter', function (e) {
             e.target.style.opacity = "1";
         })
