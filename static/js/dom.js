@@ -65,9 +65,10 @@ export let dom = {
             }
 
             changeDelIcon();
-            initAddButton(boardDivId);
+            initAddCard(boardDivId);
             initStatusButton(boardDivId);
             initDeleteBoardButton(boardDivId);
+            initDeleteCardIcon(boardDivId);
 
         },
         generateCardHtml: function (cardId, cardTitle) {
@@ -165,16 +166,17 @@ function addNewBoardEventHandler() {
                 }
 
                 inputTitle.hidden = true;
-                initAddButton(`board${data[0]['id']}`);
+                initAddCard(`board${data[0]['id']}`);
                 // console.log(`board${data[0]['id']}`);
                 initStatusButton(`board${data[0]['id']}`);
                 initDeleteBoardButton(`board${data[0]['id']}`)
+                initDeleteCardIcon(`board${data[0]['id']}`)
             })
         }
     })
 }
 
-function initAddButton(boardDivId) {
+function initAddCard(boardDivId) {
     const boardDiv = document.querySelector(`#${boardDivId}`);
     let addCardButton = boardDiv.parentElement.querySelector('.add-new-card');
     addCardButton.addEventListener('click', addNewCardEventHandler);
@@ -192,6 +194,12 @@ function initDeleteBoardButton(boardDivId) {
     deleteBoardButton.addEventListener('click', deleteBoardEventHandler);
 }
 
+function initDeleteCardIcon(boardDivId) {
+    const boardDiv = document.querySelector(`#${boardDivId}`);
+    let cardIcon = boardDiv.parentElement.querySelector('.del-icon');
+    cardIcon.addEventListener('click', deleteCardEventHandler);
+}
+
 function addNewCardEventHandler(e) {
     let board = e.target.closest('.board');
     let inputCardTitle = board.querySelector('.input-new-card-title');
@@ -204,7 +212,7 @@ function addNewCardEventHandler(e) {
     if (newCardContent !== "" && newCardStatus !== "") {
         dataHandler.addCard(newCardContent, newCardStatus, newCardBoardId, function (data) {
             let newCardString = `
-            <div class="card" data-card-id="${data[0]['board_id']}">
+            <div class="card" data-card-id="${data[0]['id']}">
             <div class="card-remove"><img class="del-icon" src="static/img/delete.png"></div>
             <div class="card-title">${newCardContent}</div>
             </div>`
@@ -267,6 +275,18 @@ function changeDelIcon() {
             e.target.style.opacity = "0.2";
         })
     }
+}
+
+function deleteCardEventHandler(e) {
+    let card = e.target.closest('.card');
+    let cardId = card.dataset.cardId;
+    dataHandler.deleteCard(cardId, function () {
+        deleteDomCard(card)
+    })
+}
+
+function deleteDomCard(card) {
+    card.remove();
 }
 
 

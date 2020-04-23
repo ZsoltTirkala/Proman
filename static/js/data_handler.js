@@ -95,6 +95,12 @@ export let dataHandler = {
         }, callback);
     },
 
+    deleteCard: function (cardId, callback) {
+        this._api_post(`/delete-card`, {
+            card_id: cardId
+        }, callback);
+    },
+
     getStatus: function (statusId, callback) {
         // the status is retrieved and then the callback function is called with the status
     },

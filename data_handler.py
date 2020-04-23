@@ -51,3 +51,6 @@ def delete_board(board_id):
     # data_manager_sql.delete_board_cards(board_id)
     # data_manager_sql.delete_board_statuses(board_id)
     data_manager_sql.delete_board_itself(board_id)
+
+def delete_card(card_id):
+    data_manager_sql.delete_card(card_id)
