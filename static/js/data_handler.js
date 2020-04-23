@@ -92,7 +92,7 @@ export let dataHandler = {
     deleteBoard: function(boardId,callback) {
         this._api_post(`/delete-board`, {
             board_id: boardId
-        },callback);
+        }, callback);
     },
 
     getStatus: function (statusId, callback) {

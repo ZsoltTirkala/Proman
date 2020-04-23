@@ -86,7 +86,7 @@ def add_new_status(cursor: RealDictCursor, new_status_title, new_status_board_id
     query = """
             INSERT INTO statuses(title, board_id)
             VALUES (%(new_status_title)s, %(new_status_board_id)s)
-            returning title, board_id;
+            returning id, title, board_id;
             """
 
     cursor.execute(query, {'new_status_title': new_status_title, 'new_status_board_id': new_status_board_id})

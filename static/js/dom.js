@@ -187,9 +187,8 @@ function initStatusButton(boardDivId) {
 
 function initDeleteBoardButton(boardDivId) {
     const boardDiv = document.querySelector(`#${boardDivId}`);
-    let deleteBoardButton = boardDiv.parentElement.querySelector('.delete-board-button')
+    let deleteBoardButton = boardDiv.parentElement.querySelector('.delete-board-button');
     deleteBoardButton.addEventListener('click',deleteBoardEventHandler);
-
 }
 
 function addNewCardEventHandler(e) {
@@ -227,9 +226,10 @@ function addNewStatusEventHandler(e) {
     inputStatusTitle.hidden = false;
     if (newStatusContent !== "") {
         dataHandler.addStatus(newStatusContent, newStatusBoardId, function (data) {
+            console.log(data);
             let newStatusString = `
         <div class="board-column">
-            <div class="board-column-title">${newStatusContent}</div>
+            <div class="board-column-title">${newStatusContent} (${data[0]['id']})</div>
             <div class="board-column-content"></div>
         </div>`
             let statusesContainer = board.querySelector(`.board-columns`);
@@ -244,8 +244,16 @@ function addNewStatusEventHandler(e) {
 function deleteBoardEventHandler(e) {
     let board = e.target.closest('.board');
     let boardId = board.dataset.boardId;
-    dataHandler.deleteBoard(boardId);
+    dataHandler.deleteBoard(boardId, function () {deleteDomBoard(board)})
 }
+
+function deleteDomBoard(board) {
+    board.remove();
+    }
+
+
+
+
 
 
 
