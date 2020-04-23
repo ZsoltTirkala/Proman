@@ -48,6 +48,6 @@ def saving_new_status(new_status_title,new_status_board_id):
     return new_status
 
 def delete_board(board_id):
-    data_manager_sql.delete_board_cards(board_id)
-    data_manager_sql.delete_board_statuses(board_id)
+    # data_manager_sql.delete_board_cards(board_id)
+    # data_manager_sql.delete_board_statuses(board_id)
     data_manager_sql.delete_board_itself(board_id)

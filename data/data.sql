@@ -49,10 +49,10 @@ ALTER TABLE ONLY cards
     ADD CONSTRAINT pk_card_id PRIMARY KEY (id);
 
 ALTER TABLE ONLY cards
-    ADD CONSTRAINT fk_board_id FOREIGN KEY (board_id) REFERENCES boards(id);
+    ADD CONSTRAINT fk_board_id FOREIGN KEY (board_id) REFERENCES boards(id) ON DELETE CASCADE ;
 
 ALTER TABLE ONLY cards
-    ADD CONSTRAINT fk_status_id FOREIGN KEY (status_id) REFERENCES statuses(id);
+    ADD CONSTRAINT fk_status_id FOREIGN KEY (status_id) REFERENCES statuses(id) ON DELETE CASCADE;
 
 
 INSERT INTO boards VALUES (1, 'Board 1');
@@ -62,7 +62,7 @@ INSERT INTO boards VALUES (3, 'Board 3');
 INSERT INTO statuses VALUES (1, 'New', 1);
 INSERT INTO statuses VALUES (2, 'In progress', 1);
 INSERT INTO statuses VALUES (3, 'Testing', 1);
-INSERT INTO statuses VALUES (4, 'Done', 1)
+INSERT INTO statuses VALUES (4, 'Done', 1);
 
 
 INSERT INTO cards VALUES (1, 'new card 1', null, 1, 1);
@@ -73,6 +73,6 @@ INSERT INTO cards VALUES (5, 'done card 1', null, 2, 4);
 INSERT INTO cards VALUES (6, 'done card 2', null, 3, 4);
 
 
--- SELECT pg_catalog.setval('boards_id_seq', 3, true);
--- SELECT pg_catalog.setval('cards_id_seq', 6, true);
--- SELECT pg_catalog.setval('statuses_id_seq', 4, true);
+SELECT pg_catalog.setval('boards_id_seq', 3, true);
+SELECT pg_catalog.setval('cards_id_seq', 6, true);
+SELECT pg_catalog.setval('statuses_id_seq', 4, true);
