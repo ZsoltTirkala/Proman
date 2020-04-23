@@ -65,6 +65,8 @@ export let dom = {
             }
 
             initAddButton(boardDivId);
+            initStatusButton(boardDivId);
+            initDeleteBoardButton(boardDivId);
 
         },
         generateCardHtml: function (cardId, cardTitle) {
@@ -78,7 +80,7 @@ export let dom = {
         generateStatusHtml: function (statusId, statusTitle) {
             return `
         <div class="board-column" data-board-column-id="${statusId}">
-            <div class="board-column-title">${statusTitle}</div>
+            <div class="board-column-title">${statusTitle}(${statusId})</div>
         `;
         },
         generateBoardHtml: function (boardId, boardTitle) {
@@ -88,6 +90,9 @@ export let dom = {
                 <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content" hidden>
                 <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status" hidden>
                 <button class="add-new-card" type="submit">Add Card</button>
+                <input  type="text" class="input-new-status-title" required placeholder="Enter New Status Name" hidden>
+                <button class="add-new-status" type="submit">Add Status</button>
+                <button class="delete-board-button" >Delete Board</button>
                 <button class="board-toggle" id="toggle${boardId}">Hide<i class="fas fa-chevron-down"></i></button>
             </div>
         `
@@ -126,6 +131,9 @@ function addNewBoardEventHandler() {
                 <input  type="text" class="input-new-card-title" required placeholder="Enter New Card content" hidden>
                 <input  type="text" class="input-new-card-status" required placeholder="Enter New Card's status" hidden>
                 <button class="add-new-card" type="submit">Add Card</button>
+                <input  type="text" class="input-new-status-title" required placeholder="Enter New Status Name" hidden>
+                <button class="add-new-status" type="submit">Add Status</button>
+                <button class="delete-board-button" >Delete Board</button>
                 <button class="board-toggle" id="toggle${data[0]['id']}">Hide<i class="fas fa-chevron-down"></i></button>
             </div>
             <div class="board-columns" id="board${data[0]['id']}">
@@ -157,7 +165,9 @@ function addNewBoardEventHandler() {
 
                 inputTitle.hidden = true;
                 initAddButton(`board${data[0]['id']}`);
-                console.log(`board${data[0]['id']}`);
+                // console.log(`board${data[0]['id']}`);
+                initStatusButton(`board${data[0]['id']}`);
+                initDeleteBoardButton(`board${data[0]['id']}`)
             })
         }
     })
@@ -169,6 +179,19 @@ function initAddButton(boardDivId) {
     addCardButton.addEventListener('click', addNewCardEventHandler);
 }
 
+function initStatusButton(boardDivId) {
+    const boardDiv = document.querySelector(`#${boardDivId}`);
+    let addCardButton = boardDiv.parentElement.querySelector('.add-new-status');
+    addCardButton.addEventListener('click', addNewStatusEventHandler);
+}
+
+function initDeleteBoardButton(boardDivId) {
+    const boardDiv = document.querySelector(`#${boardDivId}`);
+    let deleteBoardButton = boardDiv.parentElement.querySelector('.delete-board-button')
+    deleteBoardButton.addEventListener('click',deleteBoardEventHandler);
+
+}
+
 function addNewCardEventHandler(e) {
     let board = e.target.closest('.board');
     let inputCardTitle = board.querySelector('.input-new-card-title');
@@ -178,19 +201,50 @@ function addNewCardEventHandler(e) {
     let newCardBoardId = board.dataset.boardId;
     inputCardTitle.hidden = false;
     inputCardStatus.hidden = false;
-    dataHandler.addCard(newCardContent, newCardStatus, newCardBoardId, function (data) {
-        let newCardString = `
+    if (newCardContent !== "" && newCardStatus !== "") {
+        dataHandler.addCard(newCardContent, newCardStatus, newCardBoardId, function (data) {
+            let newCardString = `
             <div class="card" data-card-id="${data[0]['board_id']}">
             <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
             <div class="card-title">${newCardContent}</div>
             </div>`
-        let cardsContainer = board.querySelector(`[data-board-column-id="${newCardStatus}"] .board-column-content`);
-        cardsContainer.insertAdjacentHTML('beforeend', newCardString);
-        inputCardTitle.value = "";
-        inputCardStatus.value = "";
-        inputCardTitle.hidden = true;
-        inputCardStatus.hidden = true;
-    })
+            let cardsContainer = board.querySelector(`[data-board-column-id="${newCardStatus}"] .board-column-content`);
+            cardsContainer.insertAdjacentHTML('beforeend', newCardString);
+            inputCardTitle.value = "";
+            inputCardStatus.value = "";
+            inputCardTitle.hidden = true;
+            inputCardStatus.hidden = true;
+        })
+    }
+}
+
+function addNewStatusEventHandler(e) {
+    let board = e.target.closest(`.board`);
+    let inputStatusTitle = board.querySelector('.input-new-status-title');
+    let newStatusContent = inputStatusTitle.value;
+    let newStatusBoardId = board.dataset.boardId;
+    console.log(newStatusBoardId);
+    inputStatusTitle.hidden = false;
+    if (newStatusContent !== "") {
+        dataHandler.addStatus(newStatusContent, newStatusBoardId, function (data) {
+            let newStatusString = `
+        <div class="board-column">
+            <div class="board-column-title">${newStatusContent}</div>
+            <div class="board-column-content"></div>
+        </div>`
+            let statusesContainer = board.querySelector(`.board-columns`);
+            statusesContainer.insertAdjacentHTML('beforeend', newStatusString);
+            inputStatusTitle.value = "";
+            inputStatusTitle.hidden = true;
+
+        })
+    }
+}
+
+function deleteBoardEventHandler(e) {
+    let board = e.target.closest('.board');
+    let boardId = board.dataset.boardId;
+    dataHandler.deleteBoard(boardId);
 }
 
 

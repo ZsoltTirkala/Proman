@@ -81,7 +81,43 @@ def add_new_card(cursor: RealDictCursor, new_card_title,  new_card_status, new_c
     new_card = cursor.fetchall()
     return new_card
 
-            
+@database_common_sql.connection_handler
+def add_new_status(cursor: RealDictCursor, new_status_title, new_status_board_id):
+    query = """
+            INSERT INTO statuses(title, board_id)
+            VALUES (%(new_status_title)s, %(new_status_board_id)s)
+            returning title, board_id;
+            """
+
+    cursor.execute(query, {'new_status_title': new_status_title, 'new_status_board_id': new_status_board_id})
+    new_status = cursor.fetchall()
+    return new_status
+
+# @database_common_sql.connection_handler
+# def delete_board_cards(cursor: RealDictCursor, board_id):
+#     query = """
+#     DELETE FROM cards
+#     WHERE cards.board_id = %(board_id)s
+#     """
+#     cursor.execute(query, {'board_id': board_id})
+#
+#
+# @database_common_sql.connection_handler
+# def delete_board_statuses(cursor: RealDictCursor, board_id):
+#     query = """
+#     DELETE FROM statuses
+#     WHERE statuses.board_id = %(board_id)s
+#     """
+#     cursor.execute(query,{'board_id': board_id})
+
+
+@database_common_sql.connection_handler
+def delete_board_itself(cursor: RealDictCursor, board_id):
+    query = """
+    DELETE FROM boards
+    WHERE boards.id = %(board_id)s
+    """
+    cursor.execute(query, {'board_id': board_id})
 
 
 

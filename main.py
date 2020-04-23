@@ -40,9 +40,10 @@ def get_statuses():
     All cards that belongs to a board
     :param board_id: id of the parent board
     """
-    return data_handler.get_card_status(1)
+    return data_handler.get_card_status()
 
 # new things
+
 
 @app.route("/boards", methods=['POST'])
 @json_response
@@ -62,6 +63,20 @@ def add_new_card():
     new_card = data_handler.saving_new_card(new_card_content, new_card_status, new_card_board_id)
     return new_card
 
+@app.route("/new-status", methods=['POST'])
+@json_response
+def add_new_status():
+    new_status_title = request.json['name']
+    new_status_board_id = request.json['board_id']
+    new_status = data_handler.saving_new_status(new_status_title, new_status_board_id)
+    return new_status
+
+
+@app.route("/delete-board", methods=['POST'])
+@json_response
+def delete_board():
+    board_id = request.json['board_id']
+    data_handler.delete_board(board_id)
 
 
 def main():
