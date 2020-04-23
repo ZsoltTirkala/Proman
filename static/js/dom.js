@@ -170,7 +170,7 @@ function addNewBoardEventHandler() {
                 for (let toggle of boardHideList) {
                     toggle.addEventListener('click', dom.hideBoard);
                 }
-
+                inputTitle.hidden = true;
                 const deleteIcons = document.querySelectorAll('.del-icon');
                 changeIconHover(deleteIcons);
                 initAddCard(`board${data[0]['id']}`);
