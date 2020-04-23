@@ -64,6 +64,7 @@ export let dom = {
                 toggle.addEventListener('click', this.hideBoard);
             }
 
+            changeDelIcon();
             initAddButton(boardDivId);
             initStatusButton(boardDivId);
             initDeleteBoardButton(boardDivId);
@@ -72,7 +73,7 @@ export let dom = {
         generateCardHtml: function (cardId, cardTitle) {
             return `
         <div class="card" data-card-id="${cardId}">
-            <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
+            <div class="card-remove"><img class="del-icon" src="static/img/delete.png"></div>
             <div class="card-title">${cardTitle}</div>
         </div>
         `;
@@ -138,19 +139,19 @@ function addNewBoardEventHandler() {
             </div>
             <div class="board-columns" id="board${data[0]['id']}">
                 <div class="board-column" data-board-column-id="1">
-                    <div class="board-column-title">New</div>
+                    <div class="board-column-title">New(1)</div>
                         <div class="board-column-content"></div>
                 </div>
                 <div class="board-column" data-board-column-id="2">
-                    <div class="board-column-title">In Progress</div>
+                    <div class="board-column-title">In Progress(2)</div>
                         <div class="board-column-content"></div>
                 </div>
                 <div class="board-column"  data-board-column-id="3">
-                    <div class="board-column-title">Testing</div>
+                    <div class="board-column-title">Testing(3)</div>
                         <div class="board-column-content"></div>
                 </div>
                 <div class="board-column" data-board-column-id="4">
-                    <div class="board-column-title">Done</div>
+                    <div class="board-column-title">Done(4)</div>
                         <div class="board-column-content"></div>
                 </div>
              </div>
@@ -188,7 +189,7 @@ function initStatusButton(boardDivId) {
 function initDeleteBoardButton(boardDivId) {
     const boardDiv = document.querySelector(`#${boardDivId}`);
     let deleteBoardButton = boardDiv.parentElement.querySelector('.delete-board-button');
-    deleteBoardButton.addEventListener('click',deleteBoardEventHandler);
+    deleteBoardButton.addEventListener('click', deleteBoardEventHandler);
 }
 
 function addNewCardEventHandler(e) {
@@ -204,7 +205,7 @@ function addNewCardEventHandler(e) {
         dataHandler.addCard(newCardContent, newCardStatus, newCardBoardId, function (data) {
             let newCardString = `
             <div class="card" data-card-id="${data[0]['board_id']}">
-            <div class="card-remove"><i class="fas fa-trash-alt"></i></div>
+            <div class="card-remove"><img class="del-icon" src="static/img/delete.png"></div>
             <div class="card-title">${newCardContent}</div>
             </div>`
             let cardsContainer = board.querySelector(`[data-board-column-id="${newCardStatus}"] .board-column-content`);
@@ -213,7 +214,9 @@ function addNewCardEventHandler(e) {
             inputCardStatus.value = "";
             inputCardTitle.hidden = true;
             inputCardStatus.hidden = true;
+            changeDelIcon();
         })
+
     }
 }
 
@@ -228,7 +231,7 @@ function addNewStatusEventHandler(e) {
         dataHandler.addStatus(newStatusContent, newStatusBoardId, function (data) {
             console.log(data);
             let newStatusString = `
-        <div class="board-column">
+        <div class="board-column" data-board-column-id="${data[0]['id']}">
             <div class="board-column-title">${newStatusContent} (${data[0]['id']})</div>
             <div class="board-column-content"></div>
         </div>`
@@ -244,13 +247,27 @@ function addNewStatusEventHandler(e) {
 function deleteBoardEventHandler(e) {
     let board = e.target.closest('.board');
     let boardId = board.dataset.boardId;
-    dataHandler.deleteBoard(boardId, function () {deleteDomBoard(board)})
+    dataHandler.deleteBoard(boardId, function () {
+        deleteDomBoard(board)
+    })
 }
 
 function deleteDomBoard(board) {
     board.remove();
-    }
+}
 
+function changeDelIcon() {
+    const deleteIcons = document.querySelectorAll('.del-icon');
+    console.log(deleteIcons);
+    for (let img of deleteIcons) {
+        img.addEventListener('mouseenter', function (e) {
+            e.target.style.opacity = "1";
+        })
+        img.addEventListener('mouseleave', function (e) {
+            e.target.style.opacity = "0.2";
+        })
+    }
+}
 
 
 
