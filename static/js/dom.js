@@ -15,9 +15,9 @@ export let dom = {
                             dom.showBoard(board, statuses, cards);
                         }, board.id)
                     }
-
                 });
             });
+
         },
         showBoard: function (board, statuses, cards) {
             // shows boards appending them to #boards div
@@ -68,7 +68,7 @@ export let dom = {
             initAddCard(boardDivId);
             initStatusButton(boardDivId);
             initDeleteBoardButton(boardDivId);
-            initDeleteCardIcon(boardDivId);
+            initDeleteCardIcon();
 
         },
         generateCardHtml: function (cardId, cardTitle) {
@@ -169,8 +169,7 @@ function addNewBoardEventHandler() {
                 initAddCard(`board${data[0]['id']}`);
                 // console.log(`board${data[0]['id']}`);
                 initStatusButton(`board${data[0]['id']}`);
-                initDeleteBoardButton(`board${data[0]['id']}`)
-                initDeleteCardIcon(`board${data[0]['id']}`)
+                initDeleteBoardButton(`board${data[0]['id']}`);
             })
         }
     })
@@ -194,10 +193,16 @@ function initDeleteBoardButton(boardDivId) {
     deleteBoardButton.addEventListener('click', deleteBoardEventHandler);
 }
 
-function initDeleteCardIcon(boardDivId) {
-    const boardDiv = document.querySelector(`#${boardDivId}`);
-    let cardIcon = boardDiv.parentElement.querySelector('.del-icon');
-    cardIcon.addEventListener('click', deleteCardEventHandler);
+function initDeleteCardIcon() {
+    const boards = document.querySelectorAll(`.board`);
+    for (let board of boards) {
+        let cardIcon = board.querySelectorAll('.del-icon');
+        for (let icon of cardIcon) {
+            if (icon !== null) {
+                icon.addEventListener('click', deleteCardEventHandler);
+            }
+        }
+    }
 }
 
 function addNewCardEventHandler(e) {
@@ -223,6 +228,7 @@ function addNewCardEventHandler(e) {
             inputCardTitle.hidden = true;
             inputCardStatus.hidden = true;
             changeDelIcon();
+            initDeleteCardIcon();
         })
 
     }
