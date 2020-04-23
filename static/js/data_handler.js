@@ -101,6 +101,20 @@ export let dataHandler = {
         }, callback);
     },
 
+    renameCard: function (cardId, newTitle, callback) {
+        this._api_post(`/rename-card`, {
+            card_id: cardId,
+            new_title: newTitle
+        }, callback)
+    },
+
+    renameBoard: function (boardId, newTitle, callback) {
+        this._api_post(`/rename-board`, {
+            board_id: boardId,
+            new_title: newTitle
+        }, callback)
+    },
+
     getStatus: function (statusId, callback) {
         // the status is retrieved and then the callback function is called with the status
     },

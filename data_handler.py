@@ -48,9 +48,17 @@ def saving_new_status(new_status_title,new_status_board_id):
     return new_status
 
 def delete_board(board_id):
-    # data_manager_sql.delete_board_cards(board_id)
-    # data_manager_sql.delete_board_statuses(board_id)
     data_manager_sql.delete_board_itself(board_id)
+
 
 def delete_card(card_id):
     data_manager_sql.delete_card(card_id)
+
+
+def rename_card(card_id, new_title):
+    new_card_title = data_manager_sql.rename_card(card_id, new_title)
+    return new_card_title
+
+def rename_board(board_id, new_title):
+    new_board_title_content = data_manager_sql.rename_board(board_id, new_title)
+    return new_board_title_content

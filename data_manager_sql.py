@@ -119,7 +119,32 @@ def delete_board_itself(cursor: RealDictCursor, board_id):
     """
     cursor.execute(query, {'board_id': board_id})
 
+@database_common_sql.connection_handler
+def rename_card(cursor: RealDictCursor, card_id, new_title):
+    query = """
+    UPDATE cards
+    SET title = %(new_title)s
+    WHERE cards.id = %(card_id)s
+    returning title
+    """
 
+    cursor.execute(query, {'card_id': card_id, 'new_title': new_title})
+    new_card_title = cursor.fetchall()
+    return new_card_title
+
+
+@database_common_sql.connection_handler
+def rename_board(cursor: RealDictCursor, board_id, new_title):
+    query = """
+    UPDATE boards
+    SET title = %(new_title)s
+    WHERE boards.id = %(board_id)s
+    returning title
+    """
+
+    cursor.execute(query, {'new_title': new_title, 'board_id': board_id})
+    new_board_title_content = cursor.fetchall()
+    return new_board_title_content
 
 
 # def get_cards_for_board(board_id):

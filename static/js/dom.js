@@ -63,14 +63,16 @@ export let dom = {
             for (let toggle of boardToggleList) {
                 toggle.addEventListener('click', this.hideBoard);
             }
-
-            changeDelIcon();
-            changeRenameIcon();
+            const deleteIcons = document.querySelectorAll('.del-icon');
+            changeIconHover(deleteIcons);
+            const renameIcons = document.querySelectorAll('.rename-icon');
+            changeIconHover(renameIcons);
             initAddCard(boardDivId);
             initStatusButton(boardDivId);
             initDeleteBoardButton(boardDivId);
+            initRenameBoardButton(boardDivId);
             initDeleteCardIcon();
-
+            initRenameCardButton()
         },
         generateCardHtml: function (cardId, cardTitle) {
             return `
@@ -96,7 +98,8 @@ export let dom = {
                 <button class="add-new-card" type="submit">Add Card</button>
                 <input  type="text" class="input-new-status-title" required placeholder="Enter New Status Name" hidden>
                 <button class="add-new-status" type="submit">Add Status</button>
-                <button class="delete-board-button" >Delete Board</button>
+                <button class="rename-board">Rename Board</button>
+                <button class="delete-board-button" ><img class="del-icon" src="static/img/delete.png"></button>
                 <button class="board-toggle" id="toggle${boardId}">Hide<i class="fas fa-chevron-down"></i></button>
             </div>
         `
@@ -137,7 +140,8 @@ function addNewBoardEventHandler() {
                 <button class="add-new-card" type="submit">Add Card</button>
                 <input  type="text" class="input-new-status-title" required placeholder="Enter New Status Name" hidden>
                 <button class="add-new-status" type="submit">Add Status</button>
-                <button class="delete-board-button" >Delete Board</button>
+                <button class="rename-board">Rename Board</button>
+                <button class="delete-board-button" ><img class="del-icon" src="static/img/delete.png"></button>
                 <button class="board-toggle" id="toggle${data[0]['id']}">Hide<i class="fas fa-chevron-down"></i></button>
             </div>
             <div class="board-columns" id="board${data[0]['id']}">
@@ -167,11 +171,12 @@ function addNewBoardEventHandler() {
                     toggle.addEventListener('click', dom.hideBoard);
                 }
 
-                inputTitle.hidden = true;
+                const deleteIcons = document.querySelectorAll('.del-icon');
+                changeIconHover(deleteIcons);
                 initAddCard(`board${data[0]['id']}`);
-                // console.log(`board${data[0]['id']}`);
                 initStatusButton(`board${data[0]['id']}`);
                 initDeleteBoardButton(`board${data[0]['id']}`);
+                initRenameBoardButton(`board${data[0]['id']}`);
             })
         }
     })
@@ -195,6 +200,13 @@ function initDeleteBoardButton(boardDivId) {
     deleteBoardButton.addEventListener('click', deleteBoardEventHandler);
 }
 
+function initRenameBoardButton(boardDivId) {
+    const boardDiv = document.querySelector(`#${boardDivId}`);
+    let renameBoardButton = boardDiv.parentElement.querySelector(`.rename-board`);
+    renameBoardButton.addEventListener('click', renameBoardEventHandler);
+
+}
+
 function initDeleteCardIcon() {
     const boards = document.querySelectorAll(`.board`);
     for (let board of boards) {
@@ -205,6 +217,19 @@ function initDeleteCardIcon() {
             }
         }
     }
+}
+
+function initRenameCardButton() {
+    const boards = document.querySelectorAll(`.board`);
+    for (let board of boards) {
+        let renameIcon = board.querySelectorAll(`.rename-icon`);
+        for (let icon of renameIcon) {
+            if (icon !== null) {
+                icon.addEventListener('click', renameCardEventHandler);
+            }
+        }
+    }
+
 }
 
 function addNewCardEventHandler(e) {
@@ -230,9 +255,12 @@ function addNewCardEventHandler(e) {
             inputCardStatus.value = "";
             inputCardTitle.hidden = true;
             inputCardStatus.hidden = true;
-            changeDelIcon();
-            changeRenameIcon();
+            const deleteIcons = document.querySelectorAll('.del-icon');
+            changeIconHover(deleteIcons);
+            const renameIcons = document.querySelectorAll('.rename-icon');
+            changeIconHover(renameIcons);
             initDeleteCardIcon();
+            initRenameCardButton();
         })
 
     }
@@ -262,20 +290,53 @@ function addNewStatusEventHandler(e) {
     }
 }
 
+function renameCardEventHandler(e) {
+    const card = e.target.closest('.card');
+    let cardId = card.dataset.cardId;
+    let cardSelect = card.querySelector(`.card-title`);
+    let cardContent = cardSelect.innerHTML;
+    let newTitle = prompt('Edit your card!',`${cardContent}`)
+    if (newTitle != null){
+        dataHandler.renameCard(cardId,newTitle, function (data) {
+            cardSelect.innerHTML = `${data[0]['title']}`;
+    })}
+}
+
+function renameBoardEventHandler(e) {
+    let board = e.target.closest('.board');
+    let boardId = board.dataset.boardId;
+    let boardSelect = board.querySelector(`.board-title`);
+    let boardTitleContent = boardSelect.innerHTML;
+    let newBoardTitle = prompt('Edit your board name!',`${boardTitleContent}`);
+    if (newBoardTitle != null) {
+        dataHandler.renameBoard(boardId,newBoardTitle, function (data) {
+            boardSelect.innerHTML = `${data[0]['title']}`
+            }
+        )
+    }
+}
+
 function deleteBoardEventHandler(e) {
     let board = e.target.closest('.board');
     let boardId = board.dataset.boardId;
     dataHandler.deleteBoard(boardId, function () {
-        deleteDomBoard(board)
+        deleteDomElement(board)
+    })
+}
+function deleteCardEventHandler(e) {
+    let card = e.target.closest('.card');
+    let cardId = card.dataset.cardId;
+    dataHandler.deleteCard(cardId, function () {
+        deleteDomElement(card)
     })
 }
 
-function deleteDomBoard(board) {
-    board.remove();
+function deleteDomElement(selected) {
+    selected.remove();
 }
 
-function changeDelIcon() {
-    const deleteIcons = document.querySelectorAll('.del-icon');
+function changeIconHover(selected) {
+    const deleteIcons = selected;
     for (let img of deleteIcons) {
         img.addEventListener('mouseenter', function (e) {
             e.target.style.opacity = "1";
@@ -284,29 +345,6 @@ function changeDelIcon() {
             e.target.style.opacity = "0.2";
         })
     }
-}
-function changeRenameIcon() {
-    const renameIcons = document.querySelectorAll('.rename-icon');
-    for (let img of renameIcons) {
-        img.addEventListener('mouseenter', function (e) {
-            e.target.style.opacity = "1";
-        })
-        img.addEventListener('mouseleave', function (e) {
-            e.target.style.opacity = "0.2";
-        })
-    }
-}
-
-function deleteCardEventHandler(e) {
-    let card = e.target.closest('.card');
-    let cardId = card.dataset.cardId;
-    dataHandler.deleteCard(cardId, function () {
-        deleteDomCard(card)
-    })
-}
-
-function deleteDomCard(card) {
-    card.remove();
 }
 
 

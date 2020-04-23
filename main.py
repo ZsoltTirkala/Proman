@@ -85,6 +85,23 @@ def delete_card():
     card_id = request.json['card_id']
     data_handler.delete_card(card_id)
 
+@app.route("/rename-card", methods=['POST'])
+@json_response
+def rename_card():
+    card_id = request.json['card_id']
+    new_title = request.json['new_title']
+    new_card_content = data_handler.rename_card(card_id, new_title)
+    return new_card_content
+
+
+@app.route("/rename-board", methods=['POST'])
+@json_response
+def rename_board():
+    board_id = request.json['board_id']
+    new_title = request.json['new_title']
+    new_board_title_content = data_handler.rename_board(board_id, new_title)
+    return new_board_title_content
+
 
 def main():
     app.run(debug=True)
